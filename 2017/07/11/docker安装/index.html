@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"keemozhang.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="zhangqi                                        docker的安装配置              容器是linux支持的 容器的隔离 chroot：隔离分区cgroup：隔离资源（CPU、内存）netns：隔离网络namespaceipc docker安装前提 3.0以后版本的内核 12[root@m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker的安装配置">
+<meta property="og:url" content="https://keemozhang.com/2017/07/11/docker%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="keemozhang blog">
+<meta property="og:description" content="zhangqi                                        docker的安装配置              容器是linux支持的 容器的隔离 chroot：隔离分区cgroup：隔离资源（CPU、内存）netns：隔离网络namespaceipc docker安装前提 3.0以后版本的内核 12[root@m">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-11T05:05:20.000Z">
+<meta property="article:modified_time" content="2017-07-13T21:45:16.000Z">
+<meta property="article:author" content="keemozhang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://keemozhang.com/2017/07/11/docker%E5%AE%89%E8%A3%85/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>docker的安装配置 | keemozhang blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">keemozhang blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://keemozhang.com/2017/07/11/docker%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="keemozhang">
+      <meta itemprop="description" content="人的一切痛苦，本质上都是对自己的无能的愤怒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="keemozhang blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker的安装配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-11 13:05:20" itemprop="dateCreated datePublished" datetime="2017-07-11T13:05:20+08:00">2017-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>zhangqi </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+<div class="note default">
+            <p>docker的安装配置 </p>
+          </div>
+
+<p>容器是linux支持的</p>
+<p>容器的隔离</p>
+<p><code>chroot</code>：隔离分区<br><code>cgroup</code>：隔离资源（CPU、内存）<br><code>netns</code>：隔离网络<br>namespace<br>ipc</p>
+<p>docker安装前提</p>
+<p>3.0以后版本的内核</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># uname -r</span></span><br><span class="line">3.10.0-229.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>实验环境</p>
+<table>
+<thead>
+<tr>
+<th align="left">docker节点</th>
+<th align="left">机器域名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">控制节点</td>
+<td align="left">master.pod0.example.com</td>
+</tr>
+<tr>
+<td align="left">计算节点</td>
+<td align="left">node.pod0.example.com</td>
+</tr>
+</tbody></table>
+<p>master节点安装docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@foundation0 ~]<span class="comment"># ssh root@master.pod0.example.com</span></span><br><span class="line">[root@master ~]<span class="comment"># yum -y install docker</span></span><br></pre></td></tr></table></figure>
+
+<p>启动docker服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># systemctl enable docker</span></span><br><span class="line">[root@master ~]<span class="comment"># systemctl start docker</span></span><br></pre></td></tr></table></figure>
+
+
+<p>docker子命令不能tab补齐，安装bash命令补齐工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># yum -y install bash-completion</span></span><br><span class="line">[root@master ~]<span class="comment"># su -</span></span><br><span class="line">[root@master ~]<span class="comment"># docker </span></span><br><span class="line">attach   commit   create   events   <span class="built_in">export</span>   <span class="built_in">history</span>  import   inspect  load     <span class="built_in">logout</span>   pause    ps       push     restart  rmi      save     start    stop     top      version  </span><br><span class="line">build    <span class="built_in">cp</span>       diff     <span class="built_in">exec</span>     <span class="built_in">help</span>     images   info     <span class="built_in">kill</span>     login    logs     port     pull     rename   <span class="built_in">rm</span>       run      search   stats    tag      unpause  <span class="built_in">wait</span></span><br></pre></td></tr></table></figure>
+
+<p>查看docker版本,docker是使用go语言写的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker version</span></span><br><span class="line">Client version: 1.7.1</span><br><span class="line">Client API version: 1.19</span><br><span class="line">Package Version (client): docker-1.7.1-108.el7.x86_64</span><br><span class="line">Go version (client): go1.4.2</span><br><span class="line">Git commit (client): 3043001/1.7.1</span><br><span class="line">OS/Arch (client): linux/amd64</span><br><span class="line">Server version: 1.7.1</span><br><span class="line">Server API version: 1.19</span><br><span class="line">Package Version (server): docker-1.7.1-108.el7.x86_64</span><br><span class="line">Go version (server): go1.4.2</span><br><span class="line">Git commit (server): 3043001/1.7.1</span><br><span class="line">OS/Arch (server): linux/amd64</span><br></pre></td></tr></table></figure>
+
+<p>容器和镜像</p>
+<p>需要先有镜像，docker所有的镜像都是分层的tar包，分层利于二次修改，底层镜像尽量使用厂商的镜像</p>
+<p>镜像启动之后就是容器</p>
+<p>docker的配置文件中修改docker仓库的地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># vim /etc/sysconfig/docker</span></span><br><span class="line">ADD_REGISTRY=<span class="string">&#x27;--add-registry workstation.pod0.example.com:5000&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在不使用证书加密的情况下，加入信任的地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSECURE_REGISTRY=<span class="string">&#x27;--insecure-registry workstation.pod0.example.com:5000&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>把docker官网加入黑名单，不到docker官网搜索镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BLOCK_REGISTRY=<span class="string">&#x27;--block-registry docker.io&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件后重启生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># systemctl restart docker</span></span><br></pre></td></tr></table></figure>
+
+<p>docker搜索镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker search rhel7</span></span><br><span class="line">INDEX         NAME                                                            DESCRIPTION   STARS     OFFICIAL   AUTOMATED</span><br><span class="line">example.com   workstation.pod0.example.com:5000/library/rhel7                               0                    </span><br><span class="line">example.com   workstation.pod0.example.com:5000/openshift3/mysql-55-rhel7                   0                    </span><br><span class="line">example.com   workstation.pod0.example.com:5000/openshift3/nodejs-010-rhel7                 0                    </span><br><span class="line">example.com   workstation.pod0.example.com:5000/openshift3/php-55-rhel7                     0                    </span><br><span class="line">example.com   workstation.pod0.example.com:5000/openshift3/ruby-20-rhel7                    0</span><br></pre></td></tr></table></figure>
+
+<p>下载rhel7镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker pull rhel7</span></span><br></pre></td></tr></table></figure>
+
+<p>查看本地镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker images</span></span><br><span class="line">REPOSITORY                                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">workstation.pod0.example.com:5000/rhel7   latest              275be1d3d070        22 months ago       158.3 MB</span><br></pre></td></tr></table></figure>
+<p>docker的工作目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># cd /var/lib/docker/</span></span><br><span class="line">[root@master docker]<span class="comment"># ls</span></span><br><span class="line">containers  devicemapper  graph  init  linkgraph.db  repositories-devicemapper  tmp  trust  volumes</span><br></pre></td></tr></table></figure>
+
+<p>docker启动后的临时文件在containers目录中</p>
+<p>运行rhel7镜像，打开bash服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker run -it rhel7 bash</span></span><br><span class="line">Usage of loopback devices is strongly discouraged <span class="keyword">for</span> production use. Either use `--storage-opt dm.thinpooldev` or u</span><br><span class="line">se `--storage-opt dm.no_warn_on_loop_devices=<span class="literal">true</span>` to suppress this warning.</span><br><span class="line">[root@48632bcb1e45 /]<span class="comment"># ls</span></span><br><span class="line">bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure>
+
+<p><code>-i</code>：交互式界面<br><code>-t</code>：打开一个命令行终端<br><code>-d</code>：启动后放到后台运行</p>
+<p>发现容器是一个独立的系统，有自己的根分区</p>
+<p>查看启动的容器任务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker ps </span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">7b34f87319b2        rhel7               <span class="string">&quot;bash&quot;</span>              2 minutes ago       Up About a minute                       adoring_hoover</span><br></pre></td></tr></table></figure>
+
+<p>查看容器的进程列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker top 7b34f87319b2</span></span><br><span class="line">UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD</span><br><span class="line">root                1044                711                 0                   09:22               pts/2               00:00:00            bash</span><br></pre></td></tr></table></figure>
+
+<p>持久化存储需要挂载外部存储设备</p>
+<p>停止和启动docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker stop 7b34f87319b2</span></span><br><span class="line">7b34f87319b2</span><br><span class="line">[root@master ~]<span class="comment"># docker start 7b34f87319b2</span></span><br><span class="line">7b34f87319b2</span><br></pre></td></tr></table></figure>
+
+<p>下载hello-openshift镜像,镜像里面有一个8080端口的jboss服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker search hello</span></span><br><span class="line">INDEX         NAME                                                          DESCRIPTION   STARS     OFFICIAL   AUTOMATED</span><br><span class="line">example.com   workstation.pod0.example.com:5000/openshift/hello-openshift                 0 </span><br><span class="line">[root@master ~]<span class="comment"># docker pull openshift/hello-openshift</span></span><br></pre></td></tr></table></figure>
+
+<p>启动hello-openshift镜像，把容器的8080端口映射到物理机的18080端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker run -p 18080:8080 openshift/hello-openshift</span></span><br><span class="line">Usage of loopback devices is strongly discouraged <span class="keyword">for</span> production use. Either use `--storage-opt dm.thinpooldev` or use `--storage-opt dm.no_warn_</span><br><span class="line">on_loop_devices=<span class="literal">true</span>` to suppress this warning.</span><br><span class="line">serving on 8080</span><br><span class="line">serving on 8888</span><br></pre></td></tr></table></figure>
+
+<p>查看容器启动的进程，可以看到状况映射的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID        IMAGE                       COMMAND              CREATED             STATUS              PORTS                               NAMES</span><br><span class="line">7ed43f0360a5        openshift/hello-openshift   <span class="string">&quot;/hello-openshift&quot;</span>   3 minutes ago       Up 3 minutes        8888/tcp, 0.0.0.0:18080-&gt;8080/tcp   clever_sinoussi</span><br></pre></td></tr></table></figure>
+
+<p>查看容器的所有信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker inspect 7ed43f0360a5</span></span><br><span class="line">[</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;Id&quot;</span>: <span class="string">&quot;7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1cc3adb5a4e4&quot;</span>,</span><br><span class="line"><span class="string">&quot;Created&quot;</span>: <span class="string">&quot;2017-06-12T02:37:32.33856856Z&quot;</span>,</span><br><span class="line"><span class="string">&quot;Path&quot;</span>: <span class="string">&quot;/hello-openshift&quot;</span>,</span><br><span class="line"><span class="string">&quot;Args&quot;</span>: [],</span><br><span class="line"><span class="string">&quot;State&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Running&quot;</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">&quot;Paused&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Restarting&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;OOMKilled&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Dead&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Pid&quot;</span>: 1414,</span><br><span class="line"><span class="string">&quot;ExitCode&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;Error&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;StartedAt&quot;</span>: <span class="string">&quot;2017-06-12T02:37:33.008916483Z&quot;</span>,</span><br><span class="line"><span class="string">&quot;FinishedAt&quot;</span>: <span class="string">&quot;0001-01-01T00:00:00Z&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;Image&quot;</span>: <span class="string">&quot;0f7a086fa28fd211eb84e4b88c3aadca2eabb3dc02eba94bd4e5efaf2ba65ee5&quot;</span>,</span><br><span class="line"><span class="string">&quot;NetworkSettings&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Bridge&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;EndpointID&quot;</span>: <span class="string">&quot;dfb34bb05f5e8b49a339e7403d210910ecef129c9962421fda1d48eb0c548c37&quot;</span>,</span><br><span class="line"><span class="string">&quot;Gateway&quot;</span>: <span class="string">&quot;172.17.42.1&quot;</span>,</span><br><span class="line"><span class="string">&quot;GlobalIPv6Address&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;GlobalIPv6PrefixLen&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;HairpinMode&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.3&quot;</span>,</span><br><span class="line"><span class="string">&quot;IPPrefixLen&quot;</span>: 16,</span><br><span class="line"><span class="string">&quot;IPv6Gateway&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;LinkLocalIPv6Address&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;LinkLocalIPv6PrefixLen&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;MacAddress&quot;</span>: <span class="string">&quot;02:42:ac:11:00:03&quot;</span>,</span><br><span class="line"><span class="string">&quot;NetworkID&quot;</span>: <span class="string">&quot;ad45105bbd0e776c6770a2c3587049f033ed0bb7c05c9eacf6fddafa230478e7&quot;</span>,</span><br><span class="line"><span class="string">&quot;PortMapping&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;Ports&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;8080/tcp&quot;</span>: [</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;HostIp&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line"><span class="string">&quot;HostPort&quot;</span>: <span class="string">&quot;18080&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">],</span><br><span class="line"><span class="string">&quot;8888/tcp&quot;</span>: null</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;SandboxKey&quot;</span>: <span class="string">&quot;/var/run/docker/netns/7ed43f0360a5&quot;</span>,</span><br><span class="line"><span class="string">&quot;SecondaryIPAddresses&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;SecondaryIPv6Addresses&quot;</span>: null</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;ResolvConfPath&quot;</span>: <span class="string">&quot;/var/lib/docker/containers/7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1cc3adb5a4e4/resolv.conf&quot;</span>,</span><br><span class="line"><span class="string">&quot;HostnamePath&quot;</span>: <span class="string">&quot;/var/lib/docker/containers/7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1cc3adb5a4e4/hostname&quot;</span>,</span><br><span class="line"><span class="string">&quot;HostsPath&quot;</span>: <span class="string">&quot;/var/lib/docker/containers/7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1cc3adb5a4e4/hosts&quot;</span>,</span><br><span class="line"><span class="string">&quot;LogPath&quot;</span>: <span class="string">&quot;/var/lib/docker/containers/7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1cc3adb5a4e4/7ed43f0360a5dd09d2541e12d934569157ddec0754359cac592f1</span></span><br><span class="line"><span class="string">cc3adb5a4e4-json.log&quot;</span>,    <span class="string">&quot;Name&quot;</span>: <span class="string">&quot;/clever_sinoussi&quot;</span>,</span><br><span class="line"><span class="string">&quot;RestartCount&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;devicemapper&quot;</span>,</span><br><span class="line"><span class="string">&quot;ExecDriver&quot;</span>: <span class="string">&quot;native-0.2&quot;</span>,</span><br><span class="line"><span class="string">&quot;MountLabel&quot;</span>: <span class="string">&quot;system_u:object_r:svirt_sandbox_file_t:s0:c882,c888&quot;</span>,</span><br><span class="line"><span class="string">&quot;ProcessLabel&quot;</span>: <span class="string">&quot;system_u:system_r:svirt_lxc_net_t:s0:c882,c888&quot;</span>,</span><br><span class="line"><span class="string">&quot;Volumes&quot;</span>: &#123;&#125;,</span><br><span class="line"><span class="string">&quot;VolumesRW&quot;</span>: &#123;&#125;,</span><br><span class="line"><span class="string">&quot;AppArmorProfile&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;ExecIDs&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;HostConfig&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Binds&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;ContainerIDFile&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;LxcConf&quot;</span>: [],</span><br><span class="line"><span class="string">&quot;Memory&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;MemorySwap&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;CpuShares&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;CpuPeriod&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;CpusetCpus&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;CpusetMems&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;CpuQuota&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;BlkioWeight&quot;</span>: 0,</span><br><span class="line"><span class="string">&quot;OomKillDisable&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Privileged&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;PortBindings&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;8080/tcp&quot;</span>: [</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;HostIp&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;HostPort&quot;</span>: <span class="string">&quot;18080&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;Links&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;PublishAllPorts&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Dns&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;DnsSearch&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;ExtraHosts&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;VolumesFrom&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;Devices&quot;</span>: [],</span><br><span class="line"><span class="string">&quot;NetworkMode&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line"><span class="string">&quot;IpcMode&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;PidMode&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;UTSMode&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;CapAdd&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;CapDrop&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;RestartPolicy&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Name&quot;</span>: <span class="string">&quot;no&quot;</span>,</span><br><span class="line"><span class="string">&quot;MaximumRetryCount&quot;</span>: 0</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;SecurityOpt&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;ReadonlyRootfs&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Ulimits&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;LogConfig&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Type&quot;</span>: <span class="string">&quot;json-file&quot;</span>,</span><br><span class="line"><span class="string">&quot;Config&quot;</span>: &#123;&#125;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;CgroupParent&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;Config&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;Hostname&quot;</span>: <span class="string">&quot;7ed43f0360a5&quot;</span>,</span><br><span class="line"><span class="string">&quot;Domainname&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;User&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;AttachStdin&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;AttachStdout&quot;</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">&quot;AttachStderr&quot;</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">&quot;PortSpecs&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;ExposedPorts&quot;</span>: &#123;</span><br><span class="line"><span class="string">&quot;8080/tcp&quot;</span>: &#123;&#125;,</span><br><span class="line"><span class="string">&quot;8888/tcp&quot;</span>: &#123;&#125;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">&quot;Tty&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;OpenStdin&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;StdinOnce&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;Env&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;Cmd&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;Image&quot;</span>: <span class="string">&quot;openshift/hello-openshift&quot;</span>,</span><br><span class="line"><span class="string">&quot;Volumes&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;VolumeDriver&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;WorkingDir&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;Entrypoint&quot;</span>: [</span><br><span class="line"><span class="string">&quot;/hello-openshift&quot;</span></span><br><span class="line">],</span><br><span class="line"><span class="string">&quot;NetworkDisabled&quot;</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="string">&quot;MacAddress&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line"><span class="string">&quot;OnBuild&quot;</span>: null,</span><br><span class="line"><span class="string">&quot;Labels&quot;</span>: &#123;&#125;,</span><br><span class="line"><span class="string">&quot;Init&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>从容器的信息中查找容器的ip地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker inspect 7ed43f0360a5 |grep -iw ipaddress</span></span><br><span class="line"><span class="string">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.3&quot;</span>,</span><br></pre></td></tr></table></figure>
+
+<p>访问容器里面的服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># curl http://172.17.0.3:8080</span></span><br><span class="line">Hello OpenShift!</span><br></pre></td></tr></table></figure>
+
+<p>安装完docker后自动生成一个docker的虚拟网卡，相当于一个虚拟交换机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># ifconfig docker0</span></span><br><span class="line">docker0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">inet 172.17.42.1  netmask 255.255.0.0  broadcast 0.0.0.0</span><br><span class="line">inet6 fe80::5484:7aff:fefe:9799  prefixlen 64  scopeid 0x20&lt;<span class="built_in">link</span>&gt;</span><br><span class="line">ether 56:84:7a:fe:97:99  txqueuelen 0  (Ethernet)</span><br><span class="line">RX packets 27  bytes 1810 (1.7 KiB)</span><br><span class="line">RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">TX packets 16  bytes 1247 (1.2 KiB)</span><br><span class="line">TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br></pre></td></tr></table></figure>
+
+<p>访问本机的18080端口效果是一样的，这就是docker端口映射</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># curl http://master.pod0.example.com:18080</span></span><br><span class="line">Hello OpenShift!</span><br></pre></td></tr></table></figure>
+
+<p>查看所有的容器，包含停止运行的容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker ps -a</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES</span><br><span class="line">7b34f87319b2        rhel7               <span class="string">&quot;bash&quot;</span>              14 hours ago        Exited (137) 12 hours ago                       adoring_hoover</span><br></pre></td></tr></table></figure>
+
+<p>删除容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker stop 16cf4aa41625</span></span><br><span class="line">16cf4aa41625</span><br><span class="line">[root@master ~]<span class="comment"># docker rm 16cf4aa41625</span></span><br><span class="line">16cf4aa41625</span><br></pre></td></tr></table></figure>
+
+<p>删除镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY                                                    TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">workstation.pod0.example.com:5000/openshift/hello-openshift   latest              0f7a086fa28f        22 months ago       5.77 MB</span><br><span class="line">workstation.pod0.example.com:5000/rhel7                       latest              275be1d3d070        22 months ago       158.3 MB</span><br><span class="line">[root@master ~]<span class="comment"># docker rmi 0f7a086fa28f</span></span><br><span class="line">Untagged: workstation.pod0.example.com:5000/openshift/hello-openshift:latest</span><br><span class="line">Deleted: 0f7a086fa28fd211eb84e4b88c3aadca2eabb3dc02eba94bd4e5efaf2ba65ee5</span><br><span class="line">Deleted: 0b3f61faa394f34f8444abf70ffc3ffe52fd913bd58cdc2a3de7366b007e7d73</span><br><span class="line">Deleted: 77bb0f21469da7badd05d18664260c33d7e2fc81766715c3aac3f2d0e5e93ad0</span><br><span class="line">Deleted: 66849f7009a5237fb9651fa489555256b15a0df0415d9927fe828345804bbe2c</span><br></pre></td></tr></table></figure>
+
+<p>把下载的镜像标准输出到tar包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># docker save 0f7a086fa28f &gt; hello-openshift.tar</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/11/regular%E6%AD%A3%E5%88%99/" rel="next" title="正则表达式">
+      正则表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="keemozhang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">keemozhang</p>
+  <div class="site-description" itemprop="description">人的一切痛苦，本质上都是对自己的无能的愤怒。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">keemozhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

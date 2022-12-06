@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"keemozhang.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="zhangqi                                        ansible的学习              一、ansible的安装1. 安装ansible，ansible需要python支持，所有一并安装python1[root@student01 ~]# yum -y install python ansib">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ansible的学习">
+<meta property="og:url" content="https://keemozhang.com/2017/07/13/ansible%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="keemozhang blog">
+<meta property="og:description" content="zhangqi                                        ansible的学习              一、ansible的安装1. 安装ansible，ansible需要python支持，所有一并安装python1[root@student01 ~]# yum -y install python ansib">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-13T13:37:00.000Z">
+<meta property="article:modified_time" content="2017-07-13T21:45:16.000Z">
+<meta property="article:author" content="keemozhang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://keemozhang.com/2017/07/13/ansible%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>ansible的学习 | keemozhang blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">keemozhang blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://keemozhang.com/2017/07/13/ansible%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="keemozhang">
+      <meta itemprop="description" content="人的一切痛苦，本质上都是对自己的无能的愤怒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="keemozhang blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ansible的学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-13 21:37:00" itemprop="dateCreated datePublished" datetime="2017-07-13T21:37:00+08:00">2017-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>zhangqi </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+<div class="note default">
+            <p>ansible的学习 </p>
+          </div>
+
+<h3 id="一、ansible的安装"><a href="#一、ansible的安装" class="headerlink" title="一、ansible的安装"></a>一、ansible的安装</h3><h4 id="1-安装ansible，ansible需要python支持，所有一并安装python"><a href="#1-安装ansible，ansible需要python支持，所有一并安装python" class="headerlink" title="1. 安装ansible，ansible需要python支持，所有一并安装python"></a>1. 安装ansible，ansible需要python支持，所有一并安装python</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># yum -y install python ansible</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="2-创建一个工作目录，hosts包含一台主机"><a href="#2-创建一个工作目录，hosts包含一台主机" class="headerlink" title="2.创建一个工作目录，hosts包含一台主机"></a>2.创建一个工作目录，hosts包含一台主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># mkdir playbook</span></span><br><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts</span></span><br><span class="line">student02 ansible_ssh_host=172.25.0.12 ansible_ssh_port=22</span><br></pre></td></tr></table></figure>
+<h4 id="3-ansible服务器与其他机器创建信任关系"><a href="#3-ansible服务器与其他机器创建信任关系" class="headerlink" title="3. ansible服务器与其他机器创建信任关系"></a>3. ansible服务器与其他机器创建信任关系</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ssh-keygen</span></span><br><span class="line">[root@student01 ~]<span class="comment"># ssh-copy-id root@student02</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="4-使用ping模块测试连通状态"><a href="#4-使用ping模块测试连通状态" class="headerlink" title="4. 使用ping模块测试连通状态"></a>4. 使用ping模块测试连通状态</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible student02 -i playbook/inventory/hosts -m ping</span></span><br><span class="line">student02 | SUCCESS =&gt; &#123;</span><br><span class="line">    <span class="string">&quot;changed&quot;</span>: <span class="literal">false</span>, </span><br><span class="line">    <span class="string">&quot;ping&quot;</span>: <span class="string">&quot;pong&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<blockquote>
+<p>注：如果命令执行失败，可以在命令后面加上-vvvv，查看详细信息</p>
+</blockquote>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible student02 -i playbook/inventory/hosts -m ping -vvvv</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="5-查看服务器启动时间"><a href="#5-查看服务器启动时间" class="headerlink" title="5.  查看服务器启动时间"></a>5.  查看服务器启动时间</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible student02 -i playbook/inventory/hosts -a &quot;uptime&quot;</span></span><br><span class="line">student02 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line"> 16:33:32 up  1:22,  2 <span class="built_in">users</span>,  load average: 0.00, 0.01, 0.05</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="6-安装nginx服务以及重启nginx服务"><a href="#6-安装nginx服务以及重启nginx服务" class="headerlink" title="6. 安装nginx服务以及重启nginx服务"></a>6. 安装nginx服务以及重启nginx服务</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible student02 -i playbook/inventory/hosts -m yum -a &quot;name=nginx&quot;</span></span><br><span class="line">[root@student01 ~]<span class="comment"># ansible student02 -i playbook/inventory/hosts -m service -a &quot;name=nginx state=restarted&quot;</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<h3 id="二、YAML语法介绍"><a href="#二、YAML语法介绍" class="headerlink" title="二、YAML语法介绍"></a>二、YAML语法介绍</h3><h4 id="1-文件的起始"><a href="#1-文件的起始" class="headerlink" title="1. 文件的起始"></a>1. <strong>文件的起始</strong></h4><p>YAML文件以<code>---</code>开头以标记文件的开头，如果忘记开头三个减号，也不会影响Ansible的运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">---</span><br></pre></td></tr></table></figure>
+<h4 id="2-注释"><a href="#2-注释" class="headerlink" title="2. 注释"></a>2. <strong>注释</strong></h4><p>注释以<code>#</code>开头，一直到本行的结束</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#This is a YAML comment</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-字符串"><a href="#3-字符串" class="headerlink" title="3. 字符串"></a>3. <strong>字符串</strong></h4><p>YAML字符串不需要使用<code>&quot;&quot;</code>引起来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ansible playbook</span><br></pre></td></tr></table></figure>
+<h4 id="4-布尔值"><a href="#4-布尔值" class="headerlink" title="4. 布尔值"></a>4. <strong>布尔值</strong></h4><p>Ansible经常使用的布尔值有<code>ture</code>和<code>false</code>，<code>yes</code>和<code>no</code></p>
+<h4 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. <strong>列表</strong></h4><p>列表中的所有成员都开始于相同的缩进级别, 并且使用一个<code>- </code> 作为开头</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- bash shell</span><br><span class="line">- python</span><br><span class="line">- c++</span><br></pre></td></tr></table></figure>
+<h4 id="6-字典"><a href="#6-字典" class="headerlink" title="6. 字典"></a>6. <strong>字典</strong></h4><p>由一个简单的<code>键: 值</code>的形式组成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hostname: student01</span><br><span class="line">ip: 172.25.0.11</span><br><span class="line">server: web</span><br></pre></td></tr></table></figure>
+<h4 id="7-折行"><a href="#7-折行" class="headerlink" title="7. 折行"></a>7. <strong>折行</strong></h4><p>在需要向模块传递很多参数的时候，为了美观可以把很长的段落写成多行，使用<code>&gt;</code>标记折行，YAML会把折行替换为空格</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip: &gt;</span><br><span class="line">172.25.0.11</span><br><span class="line">172.25.0.12</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>  注：JSON文件可以直接当做YAML文件使用，但是不建议把playbook写成JSON脚本，因为YAML的亮点就是易于阅读</p>
+</blockquote>
+<h3 id="三、playbook简介"><a href="#三、playbook简介" class="headerlink" title="三、playbook简介"></a>三、playbook简介</h3><blockquote>
+<p>playbook是用于配置管理的脚本，使用Ansible时大部分时间在编写playbook</p>
+</blockquote>
+<h4 id="1-我们先写一个简单的playbook，搭建web服务"><a href="#1-我们先写一个简单的playbook，搭建web服务" class="headerlink" title="1. 我们先写一个简单的playbook，搭建web服务"></a>1. 我们先写一个简单的playbook，搭建web服务</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/web-configure.yml </span></span><br><span class="line">- name: configure webserver with nginx</span><br><span class="line">  hosts: webserver</span><br><span class="line">  sudo: Ture</span><br><span class="line">  tasks:</span><br><span class="line">    - name: install nginx</span><br><span class="line">      yum: name=nginx update_cache=<span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">    - name: copy nginx config file</span><br><span class="line">      copy: src=files/nginx_8080_localhost.conf dest=/etc/nginx/conf.d/8080</span><br><span class="line">_localhost.conf</span><br><span class="line">    </span><br><span class="line">    - name: copy index.html</span><br><span class="line">      template: src=templates/index.html.j2 dest=/usr/share/nginx/html/inde</span><br><span class="line">x.html mode=0644</span><br><span class="line">    </span><br><span class="line">    - name: restart nginx</span><br><span class="line">      service: name=nginx state=restarted</span><br><span class="line">       </span><br></pre></td></tr></table></figure>
+</code></pre>
+<blockquote>
+<p>在playbook中，建议向模块传递参数的时候用yes和no，在其他地方使用ture和false</p>
+</blockquote>
+<h4 id="2-把nginx的配置文件放在playbook-x2F-files-x2F-nginx-8080-localhost-conf-，用这个配置文件覆盖默认的配置文件"><a href="#2-把nginx的配置文件放在playbook-x2F-files-x2F-nginx-8080-localhost-conf-，用这个配置文件覆盖默认的配置文件" class="headerlink" title="2. 把nginx的配置文件放在playbook&#x2F;files&#x2F;nginx_8080_localhost.conf ，用这个配置文件覆盖默认的配置文件"></a>2. 把nginx的配置文件放在playbook&#x2F;files&#x2F;nginx_8080_localhost.conf ，用这个配置文件覆盖默认的配置文件</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">	[root@student01 ~]<span class="comment"># cat playbook/files/nginx_8080_localhost.conf </span></span><br><span class="line">server &#123;</span><br><span class="line">listen       8080 default_server;</span><br><span class="line">listen       [::]:8080 default_server;</span><br><span class="line"></span><br><span class="line">root         /usr/share/nginx/html;</span><br><span class="line">	index index.html index.htm;</span><br><span class="line">	server_name localhost;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">error_page 404 /404.html;</span><br><span class="line">location = /40x.html &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">error_page 500 502 503 504 /50x.html;</span><br><span class="line">location = /50x.html &#123;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<blockquote>
+<p>安装惯例，我们把一般文件放在files目录中，将jinja2模板文件放在templates目录中</p>
+</blockquote>
+<h4 id="3-创建一个首页"><a href="#3-创建一个首页" class="headerlink" title="3. 创建一个首页"></a>3. 创建一个首页</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 templates]<span class="comment"># cat index.html.j2 </span></span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;<span class="built_in">head</span>&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">  &lt;h1&gt;nginx, configured by ansible&lt;/h1&gt;</span><br><span class="line">  &lt;p&gt; <span class="keyword">if</span> you can see this, ansible successfully installed nginx.&lt;/p&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; ansible_managed &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<blockquote>
+<p>这个模板引用了一个ansible变量<em>ansible_managed</em>，当ansible渲染这个模板的时候，会将变量替换成这个模板文件生成时间相关信息</p>
+</blockquote>
+<h4 id="4-在hosts文件的主机前面加上-webserver-，创建一个webserver群组，表明下面的主机属于webserver"><a href="#4-在hosts文件的主机前面加上-webserver-，创建一个webserver群组，表明下面的主机属于webserver" class="headerlink" title="4. 在hosts文件的主机前面加上[webserver]，创建一个webserver群组，表明下面的主机属于webserver"></a>4. 在hosts文件的主机前面加上[webserver]，创建一个webserver群组，表明下面的主机属于webserver</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts </span></span><br><span class="line">[webserver]</span><br><span class="line">student02 ansible_ssh_host=172.25.0.12 ansible_ssh_port=22</span><br><span class="line">student03 ansible_ssh_host=172.25.0.13 ansible_ssh_port=22</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="5-执行playbook"><a href="#5-执行playbook" class="headerlink" title="5. 执行playbook"></a>5. 执行playbook</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment">#ansible-playbook -i playbook/inventory/hosts      playbook/web-configure.yml</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="6-如果没有任何报错，现在可以通过浏览器访问http-localhost-8080并看到HTML网页"><a href="#6-如果没有任何报错，现在可以通过浏览器访问http-localhost-8080并看到HTML网页" class="headerlink" title="6. 如果没有任何报错，现在可以通过浏览器访问http://localhost:8080并看到HTML网页"></a>6. 如果没有任何报错，现在可以通过浏览器访问<a href="http://localhost:8080并看到HTML网页">http://localhost:8080并看到HTML网页</a></h4><h3 id="四、playbook深入剖析"><a href="#四、playbook深入剖析" class="headerlink" title="四、playbook深入剖析"></a>四、playbook深入剖析</h3><h4 id="1-play"><a href="#1-play" class="headerlink" title="1. play"></a>1. <strong>play</strong></h4><p>通过观察YAML发现，playbook就是一组play组成的列表，每个play都必须包含两项</p>
+<p><code>host</code>：需要配置一组主机</p>
+<p><code>task</code>：需要在这些主机上执行的任务</p>
+<p>play还支持一些可选的配置，先介绍三个最常用的</p>
+<p><code>name</code>：一个注释，描述这个play是做什么的</p>
+<p><code>sudo</code>：如果为真，Ansible会在执行task的时候运行sudo切换root用户执行</p>
+<p><code>var</code>：变量和值组成的列表</p>
+<h4 id="2-task"><a href="#2-task" class="headerlink" title="2. task"></a>2. <strong>task</strong></h4><p>举例一个安装nginx的task</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- name: install nginx</span><br><span class="line">yum: name=nginx update_cache=<span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+<p>这个task告诉yum安装一个叫nginx的软件包，安装前更新安装包缓存</p>
+<p>如果想要把参数写成多行的话，可以使用折行语法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- name: install nginx</span><br><span class="line">yum: &gt;</span><br><span class="line">name=nginx</span><br><span class="line">update_cacha=<span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-模块"><a href="#3-模块" class="headerlink" title="3. 模块"></a>3. <strong>模块</strong></h4><p>模块是由Ansible包装后在主机上执行的一系列脚本，常用的有以下模块<br><code>yum</code>：使用yum包管理器安装和删除软件包<br><code>copy</code>：将文件从本地复制到主机<br><code>file</code>：设置文件、符号链接或者目录属性<br><code>service</code>：启动、停止或者重启服务<br><code>template</code>：从模板生成文件并复制到主机</p>
+<blockquote>
+<p>  ansible-doc命令工具可以查看官方文档</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible-doc service</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-将他们整合到一起，组成一个play"><a href="#4-将他们整合到一起，组成一个play" class="headerlink" title="4. 将他们整合到一起，组成一个play"></a>4. <strong>将他们整合到一起，组成一个play</strong></h4><p>这是一张实体关系图，他描述了playbook、play、host、task和module之间的关系</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">playbook--&gt;play</span><br><span class="line">play--&gt;host</span><br><span class="line">play--&gt;task</span><br><span class="line">task--&gt;module</span><br></pre></td></tr></table></figure>
+<h4 id="5-跟踪主机状态"><a href="#5-跟踪主机状态" class="headerlink" title="5. 跟踪主机状态"></a>5. <strong>跟踪主机状态</strong></h4><p>当运行ansible-playbook时，Ansible便会输出他在play中执行每一个task的状态信息</p>
+<p>有些任务的状态是changed，显示的黄色，状态ok，显示的是绿色</p>
+<p>Ansible模块会在采取任何行动之前查看主机的状态是否需要改变，如果主机的参数与模块的参数相匹配，那么不会做任何操作，直接响应ok，如果参数不匹配，则会改变主机的状态并的返回changed</p>
+<h4 id="6-vars"><a href="#6-vars" class="headerlink" title="6. vars"></a>6. <strong>vars</strong></h4><p>在playbook的play中可以使用vars区段定义变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vars:</span><br><span class="line">server_name: localhost</span><br></pre></td></tr></table></figure>
+<h4 id="7-handler"><a href="#7-handler" class="headerlink" title="7. handler"></a>7. <strong>handler</strong></h4><p>handler是Ansible提供的条件机制之一，handler和task很相似，但是他只有被task通知后才会执行，Ansible识别到task改变了系统的状态，task就会触发通知机制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tasks:</span><br><span class="line">- name: install nginx</span><br><span class="line">	    yum: name=nginx update_cache=<span class="built_in">yes</span></span><br><span class="line">	    notify: restart nginx</span><br><span class="line">	handler:</span><br><span class="line">	  - name: restart nginx</span><br><span class="line">	    service: &gt;</span><br><span class="line">	        name=nginx</span><br><span class="line">	        state=restarted</span><br></pre></td></tr></table></figure>
+<pre><code>  task将handler的名字`restart nginx`作为参数传递，只有`install nginx`这个task被执行成功了，才会触发`restart nginx`
+</code></pre>
+<blockquote>
+<p>  注意：handler只会在task执行完毕了才会执行，即使触发了很多次也只会执行一次</p>
+</blockquote>
+<h3 id="五、inventory：描述你的服务器"><a href="#五、inventory：描述你的服务器" class="headerlink" title="五、inventory：描述你的服务器"></a>五、inventory：描述你的服务器</h3><h4 id="1-inventory描述"><a href="#1-inventory描述" class="headerlink" title="1. inventory描述"></a>1. <strong>inventory描述</strong></h4><p>在Ansible中，描述主机的方法是把它们写到inventory文件中，一个简单的inventory可以只包含一些主机列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">student01</span><br><span class="line">student02.example.com</span><br><span class="line">172.25.0.13</span><br></pre></td></tr></table></figure>
+<h4 id="2-inventory行为参数"><a href="#2-inventory行为参数" class="headerlink" title="2. inventory行为参数"></a>2. <strong>inventory行为参数</strong></h4><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">默认值</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ansible_ssh_host</td>
+<td align="left">主机的名字</td>
+<td align="left">ssh目的主机</td>
+</tr>
+<tr>
+<td align="left">ansible_ssh_port</td>
+<td align="left">22</td>
+<td align="left">ssh目的端口</td>
+</tr>
+<tr>
+<td align="left">ansible_ssh_user</td>
+<td align="left">root</td>
+<td align="left">ssh登录用户</td>
+</tr>
+<tr>
+<td align="left">ansible_ssh_pass</td>
+<td align="left">none</td>
+<td align="left">ssh认证密码</td>
+</tr>
+<tr>
+<td align="left">ansible_connection</td>
+<td align="left">smart</td>
+<td align="left">ssh连接主机的连接模式</td>
+</tr>
+<tr>
+<td align="left">ansible_ssh_private_key_file</td>
+<td align="left">none</td>
+<td align="left">ssh认证秘钥</td>
+</tr>
+<tr>
+<td align="left">ansible_shell_type</td>
+<td align="left">bash</td>
+<td align="left">命令使用的shell</td>
+</tr>
+<tr>
+<td align="left">ansible_python_interpreter</td>
+<td align="left">&#x2F;usr&#x2F;bin&#x2F;python</td>
+<td align="left">python解释器路径</td>
+</tr>
+</tbody></table>
+<h4 id="3-群组"><a href="#3-群组" class="headerlink" title="3. 群组"></a>3. <strong>群组</strong></h4><p>在执行task的时候，我们希望针对一组主机执行操作，这时候就可以定义群组，Ansible有一个默认的群组<code>all</code>，包含了所有的主机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ansible all -i playbook/inventory/hosts -a &#x27;date&#x27;</span></span><br><span class="line">student02 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">Fri May 19 16:11:53 CST 2017</span><br><span class="line"></span><br><span class="line">student03 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">Fri May 19 16:11:53 CST 2017</span><br></pre></td></tr></table></figure>
+<p>我们可以在inventory文件中定义自己的群组，inventory文件是<code>.ini</code>格式的，在<code>.ini</code>格式中，同类的配置值归类在一起组成区段，我定义了一个群组webserver，包含两台主机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts </span></span><br><span class="line">[webserver]</span><br><span class="line">student02 ansible_ssh_host=172.25.0.12 ansible_ssh_port=22</span><br><span class="line">student03 ansible_ssh_host=172.25.0.13 ansible_ssh_port=22</span><br></pre></td></tr></table></figure>
+<p>上面的playbook&#x2F;inventory&#x2F;hosts中，student02是主机<code>172.25.0.12</code>的别名，指定ssh端口为22</p>
+<h4 id="4-群组嵌套"><a href="#4-群组嵌套" class="headerlink" title="4. 群组嵌套"></a>4. 群组嵌套</h4><p>Ansible还支持群组嵌套，定义一个群组包含已经定义的两个群组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts </span></span><br><span class="line">[webserver02]</span><br><span class="line">student02 ansible_ssh_host=172.25.0.12 ansible_ssh_port=22</span><br><span class="line">[webserver03]</span><br><span class="line">student03 ansible_ssh_host=172.25.0.13 ansible_ssh_port=22</span><br><span class="line">[webserver]</span><br><span class="line">webserver02</span><br><span class="line">webserver03</span><br></pre></td></tr></table></figure>
+<h4 id="5-编号主机"><a href="#5-编号主机" class="headerlink" title="5. 编号主机"></a>5. 编号主机</h4><p>当inventory包含很多主机的时候，可以通过编号范围指定主机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts </span></span><br><span class="line">[webserver]</span><br><span class="line">student[01:20] ansible_ssh_port=22</span><br></pre></td></tr></table></figure>
+<h4 id="6-群组变量"><a href="#6-群组变量" class="headerlink" title="6. 群组变量"></a>6. 群组变量</h4><p>可以在工作目录playbook目录中新建目录host_vars&#x2F;production来存放变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># cat playbook/host_vars/production/webserver </span></span><br><span class="line">webserver:</span><br><span class="line">name=webserver</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/13/nginx%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="prev" title="nginx的学习">
+      <i class="fa fa-chevron-left"></i> nginx的学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/13/nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4/" rel="next" title="nginx版本升级步骤">
+      nginx版本升级步骤 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81ansible%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">一、ansible的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85ansible%EF%BC%8Cansible%E9%9C%80%E8%A6%81python%E6%94%AF%E6%8C%81%EF%BC%8C%E6%89%80%E6%9C%89%E4%B8%80%E5%B9%B6%E5%AE%89%E8%A3%85python"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装ansible，ansible需要python支持，所有一并安装python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%EF%BC%8Chosts%E5%8C%85%E5%90%AB%E4%B8%80%E5%8F%B0%E4%B8%BB%E6%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">2.创建一个工作目录，hosts包含一台主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ansible%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E%E5%85%B6%E4%BB%96%E6%9C%BA%E5%99%A8%E5%88%9B%E5%BB%BA%E4%BF%A1%E4%BB%BB%E5%85%B3%E7%B3%BB"><span class="nav-number">1.3.</span> <span class="nav-text">3. ansible服务器与其他机器创建信任关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8ping%E6%A8%A1%E5%9D%97%E6%B5%8B%E8%AF%95%E8%BF%9E%E9%80%9A%E7%8A%B6%E6%80%81"><span class="nav-number">1.4.</span> <span class="nav-text">4. 使用ping模块测试连通状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4"><span class="nav-number">1.5.</span> <span class="nav-text">5.  查看服务器启动时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%AE%89%E8%A3%85nginx%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E9%87%8D%E5%90%AFnginx%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.6.</span> <span class="nav-text">6. 安装nginx服务以及重启nginx服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81YAML%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">二、YAML语法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E7%9A%84%E8%B5%B7%E5%A7%8B"><span class="nav-number">2.1.</span> <span class="nav-text">1. 文件的起始</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">2. 注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.3.</span> <span class="nav-text">3. 字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B8%83%E5%B0%94%E5%80%BC"><span class="nav-number">2.4.</span> <span class="nav-text">4. 布尔值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%88%97%E8%A1%A8"><span class="nav-number">2.5.</span> <span class="nav-text">5. 列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%AD%97%E5%85%B8"><span class="nav-number">2.6.</span> <span class="nav-text">6. 字典</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%8A%98%E8%A1%8C"><span class="nav-number">2.7.</span> <span class="nav-text">7. 折行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81playbook%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">三、playbook简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%88%91%E4%BB%AC%E5%85%88%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84playbook%EF%BC%8C%E6%90%AD%E5%BB%BAweb%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.1.</span> <span class="nav-text">1. 我们先写一个简单的playbook，搭建web服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%8A%8Anginx%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%94%BE%E5%9C%A8playbook-x2F-files-x2F-nginx-8080-localhost-conf-%EF%BC%8C%E7%94%A8%E8%BF%99%E4%B8%AA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A6%86%E7%9B%96%E9%BB%98%E8%AE%A4%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">2. 把nginx的配置文件放在playbook&#x2F;files&#x2F;nginx_8080_localhost.conf ，用这个配置文件覆盖默认的配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%A6%96%E9%A1%B5"><span class="nav-number">3.3.</span> <span class="nav-text">3. 创建一个首页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%9C%A8hosts%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%89%8D%E9%9D%A2%E5%8A%A0%E4%B8%8A-webserver-%EF%BC%8C%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAwebserver%E7%BE%A4%E7%BB%84%EF%BC%8C%E8%A1%A8%E6%98%8E%E4%B8%8B%E9%9D%A2%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%B1%9E%E4%BA%8Ewebserver"><span class="nav-number">3.4.</span> <span class="nav-text">4. 在hosts文件的主机前面加上[webserver]，创建一个webserver群组，表明下面的主机属于webserver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%89%A7%E8%A1%8Cplaybook"><span class="nav-number">3.5.</span> <span class="nav-text">5. 执行playbook</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E4%BB%BB%E4%BD%95%E6%8A%A5%E9%94%99%EF%BC%8C%E7%8E%B0%E5%9C%A8%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BF%E9%97%AEhttp-localhost-8080%E5%B9%B6%E7%9C%8B%E5%88%B0HTML%E7%BD%91%E9%A1%B5"><span class="nav-number">3.6.</span> <span class="nav-text">6. 如果没有任何报错，现在可以通过浏览器访问http:&#x2F;&#x2F;localhost:8080并看到HTML网页</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81playbook%E6%B7%B1%E5%85%A5%E5%89%96%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">四、playbook深入剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-play"><span class="nav-number">4.1.</span> <span class="nav-text">1. play</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-task"><span class="nav-number">4.2.</span> <span class="nav-text">2. task</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%A8%A1%E5%9D%97"><span class="nav-number">4.3.</span> <span class="nav-text">3. 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B0%86%E4%BB%96%E4%BB%AC%E6%95%B4%E5%90%88%E5%88%B0%E4%B8%80%E8%B5%B7%EF%BC%8C%E7%BB%84%E6%88%90%E4%B8%80%E4%B8%AAplay"><span class="nav-number">4.4.</span> <span class="nav-text">4. 将他们整合到一起，组成一个play</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E8%B7%9F%E8%B8%AA%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81"><span class="nav-number">4.5.</span> <span class="nav-text">5. 跟踪主机状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-vars"><span class="nav-number">4.6.</span> <span class="nav-text">6. vars</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-handler"><span class="nav-number">4.7.</span> <span class="nav-text">7. handler</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81inventory%EF%BC%9A%E6%8F%8F%E8%BF%B0%E4%BD%A0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">五、inventory：描述你的服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-inventory%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.1.</span> <span class="nav-text">1. inventory描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-inventory%E8%A1%8C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="nav-number">5.2.</span> <span class="nav-text">2. inventory行为参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%BE%A4%E7%BB%84"><span class="nav-number">5.3.</span> <span class="nav-text">3. 群组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%BE%A4%E7%BB%84%E5%B5%8C%E5%A5%97"><span class="nav-number">5.4.</span> <span class="nav-text">4. 群组嵌套</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%BC%96%E5%8F%B7%E4%B8%BB%E6%9C%BA"><span class="nav-number">5.5.</span> <span class="nav-text">5. 编号主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E7%BE%A4%E7%BB%84%E5%8F%98%E9%87%8F"><span class="nav-number">5.6.</span> <span class="nav-text">6. 群组变量</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="keemozhang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">keemozhang</p>
+  <div class="site-description" itemprop="description">人的一切痛苦，本质上都是对自己的无能的愤怒。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">keemozhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

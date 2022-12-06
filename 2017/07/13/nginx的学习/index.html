@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"keemozhang.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="zhangqi                                        nginx的学习              一、用户访问网站的完整访问流程1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx的学习">
+<meta property="og:url" content="https://keemozhang.com/2017/07/13/nginx%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="keemozhang blog">
+<meta property="og:description" content="zhangqi                                        nginx的学习              一、用户访问网站的完整访问流程1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-13T13:37:00.000Z">
+<meta property="article:modified_time" content="2017-07-13T21:45:16.000Z">
+<meta property="article:author" content="keemozhang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://keemozhang.com/2017/07/13/nginx%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>nginx的学习 | keemozhang blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">keemozhang blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://keemozhang.com/2017/07/13/nginx%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="keemozhang">
+      <meta itemprop="description" content="人的一切痛苦，本质上都是对自己的无能的愤怒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="keemozhang blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx的学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-13 21:37:00" itemprop="dateCreated datePublished" datetime="2017-07-13T21:37:00+08:00">2017-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>zhangqi </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+<div class="note default">
+            <p>nginx的学习 </p>
+          </div>
+
+<h3 id="一、用户访问网站的完整访问流程"><a href="#一、用户访问网站的完整访问流程" class="headerlink" title="一、用户访问网站的完整访问流程"></a>一、用户访问网站的完整访问流程</h3><h4 id="1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。"><a href="#1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。" class="headerlink" title="1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。"></a>1. 客户端用户在浏览器输入网址<a target="_blank" rel="noopener" href="http://www.baidu.com,回车后,系统首先会查找系统本地的dns缓存及hosts文件信息,确定是否存在www.baidu.com域名对应的ip解析记录,如果有就直接获取ip地址,然后去访问这个ip地址对应的域名www.baidu.com的服务器./">www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。</a></h4><h4 id="2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器"><a href="#2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器" class="headerlink" title="2. 如果客户端本地DNS缓存及hosts文件没有www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器"></a>2. 如果客户端本地DNS缓存及hosts文件没有<a target="_blank" rel="noopener" href="http://www.baidu.com域名对应的ip解析记录,那么系统会把浏览器的解析请求发送给客户端本地设置的local/">www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local</a> DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器</h4><h4 id="3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好"><a href="#3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好" class="headerlink" title="3. local DNS从DNS系统的根开始请求对www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好"></a>3. local DNS从DNS系统的根开始请求对<a target="_blank" rel="noopener" href="http://www.baidu.com域名的解析,并针对各个层级的dns服务器系统进行一系列的查找,最终会找到www.baidu.com域名对应的授权dns服务器,而这个授权的dns服务器是企业购买域名时用于管理域名解析的服务器,这个授权服务器会有www.baidu.com对应的ip解析记录,如果没有解析记录,表示企业没有对www.baidu.com域名做解析设置,即网站没有架设好/">www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好</a></h4><h4 id="4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS"><a href="#4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS" class="headerlink" title="4. www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local DNS"></a>4. <a target="_blank" rel="noopener" href="http://www.baidu.com域名的授权dns服务器会把www.baidu.com对应的最终ip解析记录发给local/">www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local</a> DNS</h4><h4 id="5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期"><a href="#5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期" class="headerlink" title="5. local DNS把来自授权DNS服务器www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS TTL值控制的时间内不会过期"></a>5. local DNS把来自授权DNS服务器<a target="_blank" rel="noopener" href="http://www.baidu.com对应的ip解析记录发给客户端浏览器,并且他会把该域名和ip的对应解析缓存起来,以便下一次更快的返回相同解析请求的记录,这些缓存记录在dns/">www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS</a> TTL值控制的时间内不会过期</h4><h4 id="6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"><a href="#6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器" class="headerlink" title="6. 客户端浏览器获取www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"></a>6. 客户端浏览器获取<a target="_blank" rel="noopener" href="http://www.baidu.com的对应ip,浏览器会请求获得ip地址对应的网站服务器,网站服务器接收到客户的请求并响应处理,将客户请求的内容返回给客户端浏览器/">www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器</a></h4><h3 id="二、ginx源码包安装"><a href="#二、ginx源码包安装" class="headerlink" title="二、ginx源码包安装"></a>二、ginx源码包安装</h3><h4 id="1-安装Nginx依赖包"><a href="#1-安装Nginx依赖包" class="headerlink" title="1. 安装Nginx依赖包"></a>1. 安装Nginx依赖包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># yum -y install gcc gcc-c++ automake pcre pcre-devel zlib zlib-devel open openssl-devel</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-解压nginx安装包"><a href="#2-解压nginx安装包" class="headerlink" title="2. 解压nginx安装包"></a>2. 解压nginx安装包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># tar -xzvf nginx-1.13.0.tar.gz</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-生成Makefile文件"><a href="#3-生成Makefile文件" class="headerlink" title="3. 生成Makefile文件"></a>3. 生成Makefile文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># cd nginx-1.13.0/</span></span><br><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># ./configure --user=nginx --group=nginx --prefix=/usr/local/nginx-1.13.0 --with-http_stub_status_module --with-http_ssl_module</span></span><br><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># ll Makefile </span></span><br><span class="line">-rw-r--r--. 1 root root 376 May 22 10:39 Makefile</span><br></pre></td></tr></table></figure>
+<h4 id="4-nginx的编译安装"><a href="#4-nginx的编译安装" class="headerlink" title="4. nginx的编译安装"></a>4. nginx的编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># make &amp;&amp; make install</span></span><br><span class="line">[root@student02 ~]<span class="comment"># useradd nginx -s /sbin/nologin -M</span></span><br><span class="line">[root@student02 ~]<span class="comment"># ln -s /usr/local/nginx-1.13.0 /usr/local/nginx</span></span><br><span class="line">[root@student02 ~]<span class="comment"># ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-nginx安装目录介绍"><a href="#5-nginx安装目录介绍" class="headerlink" title="5. nginx安装目录介绍"></a>5. nginx安装目录介绍</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># cd /usr/local/nginx/</span></span><br><span class="line">[root@student02 nginx]<span class="comment"># ls</span></span><br><span class="line">conf  html  logs  sbin</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>conf存放了nginx所有的配置文件，nginx.conf是nginx的主配置文件，html目录存放了nginx服务器在运行过程中调用的网页文件，logs目录存放nginx的日志，sbin目录只有一个nginx文件，是nginx服务器的主程序</p>
+</blockquote>
+<h4 id="6-nginx的版本"><a href="#6-nginx的版本" class="headerlink" title="6. nginx的版本"></a>6. nginx的版本</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># nginx -v</span></span><br><span class="line">nginx version: nginx/1.10.2</span><br></pre></td></tr></table></figure>
+<h4 id="7-检查nginx配置文件语法"><a href="#7-检查nginx配置文件语法" class="headerlink" title="7. 检查nginx配置文件语法"></a>7. 检查nginx配置文件语法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># nginx -t</span></span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf <span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
+<h4 id="8-启动nginx服务"><a href="#8-启动nginx服务" class="headerlink" title="8. 启动nginx服务"></a>8. 启动nginx服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># nginx</span></span><br><span class="line">[root@student02 ~]<span class="comment"># ps -ef |grep nginx</span></span><br><span class="line">root       3757      1  0 11:00 ?        00:00:00 nginx: master process nginx</span><br><span class="line">nginx      3758   3757  0 11:00 ?        00:00:00 nginx: worker process</span><br><span class="line">root       3760   1074  0 11:00 pts/0    00:00:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+<h4 id="9-重启nginx服务"><a href="#9-重启nginx服务" class="headerlink" title="9. 重启nginx服务"></a>9. 重启nginx服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># nginx -s stop</span></span><br><span class="line">[root@student02 ~]<span class="comment"># nginx</span></span><br><span class="line">[root@student02 ~]<span class="comment"># nginx -s reload</span></span><br></pre></td></tr></table></figure>
+<h4 id="10-查看nginx服务端口"><a href="#10-查看nginx服务端口" class="headerlink" title="10. 查看nginx服务端口"></a>10. 查看nginx服务端口</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># lsof -i :80</span></span><br><span class="line">COMMAND  PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">nginx   3757  root    8u  IPv4  23526      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   3757  root    9u  IPv6  23527      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   3809 nginx    8u  IPv4  23526      0t0  TCP *:http (LISTEN)</span><br><span class="line">nginx   3809 nginx    9u  IPv6  23527      0t0  TCP *:http (LISTEN)</span><br><span class="line">[root@student02 ~]<span class="comment"># netstat -nultp |grep :80&#x27; &#x27;</span></span><br><span class="line">tcp        0      0 0.0.0.0:80    0.0.0.0:*      LISTEN  3757/nginx: master</span><br><span class="line">tcp6       0      0 :::80         :::*           LISTEN  3757/nginx: master</span><br></pre></td></tr></table></figure>
+<h4 id="11-检测nginx访问"><a href="#11-检测nginx访问" class="headerlink" title="11. 检测nginx访问"></a>11. 检测nginx访问</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># wget 172.25.0.12</span></span><br><span class="line">[root@student02 ~]<span class="comment"># curl 172.25.0.12</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="三、HTTP协议"><a href="#三、HTTP协议" class="headerlink" title="三、HTTP协议"></a>三、HTTP协议</h3><h4 id="1-HTTP的请求方法"><a href="#1-HTTP的请求方法" class="headerlink" title="1. HTTP的请求方法"></a>1. HTTP的请求方法</h4><p>在HTTP通信中，每个HTTP请求报文都包含一个请求方法，用于告诉web服务器需要执行哪些具体动作，这些动作包括：获取指定web页面、提交内容到服务器、删除服务器上资源文件等，这些HTTP请求报文的方法称作HTTP请求方法</p>
+<table>
+<thead>
+<tr>
+<th align="left">HTTP请求方法</th>
+<th align="left">作用描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">GET</td>
+<td align="left">客户端请求指定资源信息，服务器返回指定资源</td>
+</tr>
+<tr>
+<td align="left">HEAD</td>
+<td align="left">值请求相应报文中的HTTP首部</td>
+</tr>
+<tr>
+<td align="left">POST</td>
+<td align="left">将客户端的数据提交到服务器</td>
+</tr>
+<tr>
+<td align="left">PUT</td>
+<td align="left">从客户端上传数据取代指定的文档内容</td>
+</tr>
+<tr>
+<td align="left">DELETE</td>
+<td align="left">请求服务器删除Request-URI所标识的资源</td>
+</tr>
+<tr>
+<td align="left">MOVE</td>
+<td align="left">请求服务器将指定的页面移至另一个网络地址</td>
+</tr>
+</tbody></table>
+<h4 id="2-HTTP状态码"><a href="#2-HTTP状态码" class="headerlink" title="2. HTTP状态码"></a>2. HTTP状态码</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/11/elk%E5%AD%A6%E4%B9%A0%E4%B9%8Belasticsearch/" rel="prev" title="elk学习之elasticsearch">
+      <i class="fa fa-chevron-left"></i> elk学习之elasticsearch
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/13/ansible%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="next" title="ansible的学习">
+      ansible的学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E7%BD%91%E7%AB%99%E7%9A%84%E5%AE%8C%E6%95%B4%E8%AE%BF%E9%97%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、用户访问网站的完整访问流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%94%A8%E6%88%B7%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5%E7%BD%91%E5%9D%80www-baidu-com%EF%BC%8C%E5%9B%9E%E8%BD%A6%E5%90%8E%EF%BC%8C%E7%B3%BB%E7%BB%9F%E9%A6%96%E5%85%88%E4%BC%9A%E6%9F%A5%E6%89%BE%E7%B3%BB%E7%BB%9F%E6%9C%AC%E5%9C%B0%E7%9A%84DNS%E7%BC%93%E5%AD%98%E5%8F%8Ahosts%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%8C%E7%A1%AE%E5%AE%9A%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8www-baidu-com%E5%9F%9F%E5%90%8D%E5%AF%B9%E5%BA%94%E7%9A%84ip%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E5%B0%B1%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96ip%E5%9C%B0%E5%9D%80%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8E%BB%E8%AE%BF%E9%97%AE%E8%BF%99%E4%B8%AAip%E5%9C%B0%E5%9D%80%E5%AF%B9%E5%BA%94%E7%9A%84%E5%9F%9F%E5%90%8Dwww-baidu-com%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%82"><span class="nav-number">1.1.</span> <span class="nav-text">1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A6%82%E6%9E%9C%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%AC%E5%9C%B0DNS%E7%BC%93%E5%AD%98%E5%8F%8Ahosts%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89www-baidu-com%E5%9F%9F%E5%90%8D%E5%AF%B9%E5%BA%94%E7%9A%84ip%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%EF%BC%8C%E9%82%A3%E4%B9%88%E7%B3%BB%E7%BB%9F%E4%BC%9A%E6%8A%8A%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E8%A7%A3%E6%9E%90%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E7%BB%99%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%AC%E5%9C%B0%E8%AE%BE%E7%BD%AE%E7%9A%84local-DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A7%A3%E6%9E%90%EF%BC%8C%E5%A6%82%E6%9E%9Clocal-DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98%E6%9C%89%E5%AF%B9%E5%BA%94%E7%9A%84%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%E5%B0%B1%E4%BC%9A%E8%BF%94%E5%9B%9EIP%E5%9C%B0%E5%9D%80%E7%BB%99%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%EF%BC%8C%E5%88%99local-DNS%E4%BC%9A%E8%AF%B7%E6%B1%82%E5%85%B6%E4%BB%96%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2. 如果客户端本地DNS缓存及hosts文件没有www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-local-DNS%E4%BB%8EDNS%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A0%B9%E5%BC%80%E5%A7%8B%E8%AF%B7%E6%B1%82%E5%AF%B9www-baidu-com%E5%9F%9F%E5%90%8D%E7%9A%84%E8%A7%A3%E6%9E%90%EF%BC%8C%E5%B9%B6%E9%92%88%E5%AF%B9%E5%90%84%E4%B8%AA%E5%B1%82%E7%BA%A7%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%B3%BB%E7%BB%9F%E8%BF%9B%E8%A1%8C%E4%B8%80%E7%B3%BB%E5%88%97%E7%9A%84%E6%9F%A5%E6%89%BE%EF%BC%8C%E6%9C%80%E7%BB%88%E4%BC%9A%E6%89%BE%E5%88%B0www-baidu-com%E5%9F%9F%E5%90%8D%E5%AF%B9%E5%BA%94%E7%9A%84%E6%8E%88%E6%9D%83DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E8%80%8C%E8%BF%99%E4%B8%AA%E6%8E%88%E6%9D%83%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E4%BC%81%E4%B8%9A%E8%B4%AD%E4%B9%B0%E5%9F%9F%E5%90%8D%E6%97%B6%E7%94%A8%E4%BA%8E%E7%AE%A1%E7%90%86%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%8E%88%E6%9D%83%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%9A%E6%9C%89www-baidu-com%E5%AF%B9%E5%BA%94%E7%9A%84ip%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%EF%BC%8C%E8%A1%A8%E7%A4%BA%E4%BC%81%E4%B8%9A%E6%B2%A1%E6%9C%89%E5%AF%B9www-baidu-com%E5%9F%9F%E5%90%8D%E5%81%9A%E8%A7%A3%E6%9E%90%E8%AE%BE%E7%BD%AE%EF%BC%8C%E5%8D%B3%E7%BD%91%E7%AB%99%E6%B2%A1%E6%9C%89%E6%9E%B6%E8%AE%BE%E5%A5%BD"><span class="nav-number">1.3.</span> <span class="nav-text">3. local DNS从DNS系统的根开始请求对www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-www-baidu-com%E5%9F%9F%E5%90%8D%E7%9A%84%E6%8E%88%E6%9D%83DNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%9A%E6%8A%8Awww-baidu-com%E5%AF%B9%E5%BA%94%E7%9A%84%E6%9C%80%E7%BB%88ip%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%E5%8F%91%E7%BB%99local-DNS"><span class="nav-number">1.4.</span> <span class="nav-text">4. www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local DNS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-local-DNS%E6%8A%8A%E6%9D%A5%E8%87%AA%E6%8E%88%E6%9D%83DNS%E6%9C%8D%E5%8A%A1%E5%99%A8www-baidu-com%E5%AF%B9%E5%BA%94%E7%9A%84ip%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95%E5%8F%91%E7%BB%99%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8F%E8%A7%88%E5%99%A8%EF%BC%8C%E5%B9%B6%E4%B8%94%E4%BB%96%E4%BC%9A%E6%8A%8A%E8%AF%A5%E5%9F%9F%E5%90%8D%E5%92%8Cip%E7%9A%84%E5%AF%B9%E5%BA%94%E8%A7%A3%E6%9E%90%E7%BC%93%E5%AD%98%E8%B5%B7%E6%9D%A5%EF%BC%8C%E4%BB%A5%E4%BE%BF%E4%B8%8B%E4%B8%80%E6%AC%A1%E6%9B%B4%E5%BF%AB%E7%9A%84%E8%BF%94%E5%9B%9E%E7%9B%B8%E5%90%8C%E8%A7%A3%E6%9E%90%E8%AF%B7%E6%B1%82%E7%9A%84%E8%AE%B0%E5%BD%95%EF%BC%8C%E8%BF%99%E4%BA%9B%E7%BC%93%E5%AD%98%E8%AE%B0%E5%BD%95%E5%9C%A8DNS-TTL%E5%80%BC%E6%8E%A7%E5%88%B6%E7%9A%84%E6%97%B6%E9%97%B4%E5%86%85%E4%B8%8D%E4%BC%9A%E8%BF%87%E6%9C%9F"><span class="nav-number">1.5.</span> <span class="nav-text">5. local DNS把来自授权DNS服务器www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS TTL值控制的时间内不会过期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E8%8E%B7%E5%8F%96www-baidu-com%E7%9A%84%E5%AF%B9%E5%BA%94ip%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%9A%E8%AF%B7%E6%B1%82%E8%8E%B7%E5%BE%97ip%E5%9C%B0%E5%9D%80%E5%AF%B9%E5%BA%94%E7%9A%84%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8E%A5%E6%94%B6%E5%88%B0%E5%AE%A2%E6%88%B7%E7%9A%84%E8%AF%B7%E6%B1%82%E5%B9%B6%E5%93%8D%E5%BA%94%E5%A4%84%E7%90%86%EF%BC%8C%E5%B0%86%E5%AE%A2%E6%88%B7%E8%AF%B7%E6%B1%82%E7%9A%84%E5%86%85%E5%AE%B9%E8%BF%94%E5%9B%9E%E7%BB%99%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-number">1.6.</span> <span class="nav-text">6. 客户端浏览器获取www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81ginx%E6%BA%90%E7%A0%81%E5%8C%85%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">二、ginx源码包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Nginx%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">2.1.</span> <span class="nav-text">1. 安装Nginx依赖包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%A7%A3%E5%8E%8Bnginx%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">2.2.</span> <span class="nav-text">2. 解压nginx安装包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%94%9F%E6%88%90Makefile%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">3. 生成Makefile文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-nginx%E7%9A%84%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="nav-number">2.4.</span> <span class="nav-text">4. nginx的编译安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-nginx%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.5.</span> <span class="nav-text">5. nginx安装目录介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-nginx%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">2.6.</span> <span class="nav-text">6. nginx的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%A3%80%E6%9F%A5nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%AD%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text">7. 检查nginx配置文件语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%90%AF%E5%8A%A8nginx%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.8.</span> <span class="nav-text">8. 启动nginx服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E9%87%8D%E5%90%AFnginx%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.9.</span> <span class="nav-text">9. 重启nginx服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E6%9F%A5%E7%9C%8Bnginx%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.10.</span> <span class="nav-text">10. 查看nginx服务端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-%E6%A3%80%E6%B5%8Bnginx%E8%AE%BF%E9%97%AE"><span class="nav-number">2.11.</span> <span class="nav-text">11. 检测nginx访问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81HTTP%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text">三、HTTP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-HTTP%E7%9A%84%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">1. HTTP的请求方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-HTTP%E7%8A%B6%E6%80%81%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">2. HTTP状态码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="keemozhang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">keemozhang</p>
+  <div class="site-description" itemprop="description">人的一切痛苦，本质上都是对自己的无能的愤怒。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">keemozhang</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
