@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"keemozhang.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="zhangqi                                        tcp调优参数              统计tcp各种状态的个数  netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,stat">
+  <meta name="description" content="统计tcp各种状态的个数  netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,state[key]}’  对于一个新建连接，内核要发送多少个SYN连接请求才决定放弃。默认值：6，对应于180秒左右时间，对于大负载而物理通信良好的网络而言,这个值偏高,可修改为2.这个值仅仅是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tcp调优参数">
 <meta property="og:url" content="https://keemozhang.com/2017/07/11/tcp%E8%B0%83%E4%BC%98%E5%8F%82%E6%95%B0/index.html">
 <meta property="og:site_name" content="keemozhang blog">
-<meta property="og:description" content="zhangqi                                        tcp调优参数              统计tcp各种状态的个数  netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,stat">
+<meta property="og:description" content="统计tcp各种状态的个数  netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,state[key]}’  对于一个新建连接，内核要发送多少个SYN连接请求才决定放弃。默认值：6，对应于180秒左右时间，对于大负载而物理通信良好的网络而言,这个值偏高,可修改为2.这个值仅仅是">
 <meta property="og:locale">
 <meta property="article:published_time" content="2017-07-11T15:45:20.000Z">
-<meta property="article:modified_time" content="2017-08-28T13:53:30.000Z">
+<meta property="article:modified_time" content="2022-12-14T07:55:49.975Z">
 <meta property="article:author" content="keemozhang">
 <meta name="twitter:card" content="summary">
 
@@ -180,7 +180,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-08-28 21:53:30" itemprop="dateModified" datetime="2017-08-28T21:53:30+08:00">2017-08-28</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -194,17 +194,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>tcp调优参数 </p>
-          </div>
-
-<p>统计tcp各种状态的个数</p>
+        <p>统计tcp各种状态的个数</p>
 <blockquote>
 <p>netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,state[key]}’</p>
 </blockquote>
@@ -380,7 +370,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -147,6 +147,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://keemozhang.com/2020/01/06/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="keemozhang">
+      <meta itemprop="description" content="人的一切痛苦，本质上都是对自己的无能的愤怒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="keemozhang blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/06/kafka%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">kafka的基本命令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-06T00:00:00+08:00">2020-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-12-14 15:58:11" itemprop="dateModified" datetime="2022-12-14T15:58:11+08:00">2022-12-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="kafka的基本命令"><a href="#kafka的基本命令" class="headerlink" title="kafka的基本命令"></a>kafka的基本命令</h1><p><strong>Kafka</strong>是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。</p>
+<hr>
+<h2 id="基本命令使用"><a href="#基本命令使用" class="headerlink" title="基本命令使用"></a>基本命令使用</h2><h3 id="列出所有可用的topic"><a href="#列出所有可用的topic" class="headerlink" title="列出所有可用的topic"></a>列出所有可用的topic</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-topics.sh --list --zookeeper 172.20.40.51:2181</span><br></pre></td></tr></table></figure>
+
+<h3 id="新建topic命令"><a href="#新建topic命令" class="headerlink" title="新建topic命令"></a>新建topic命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-topics.sh -zookeeper 172.20.40.51:2181 -topic seclogs -replication-factor 1 -partitions 3 -create</span><br></pre></td></tr></table></figure>
+<h3 id="删除topic"><a href="#删除topic" class="headerlink" title="删除topic"></a>删除topic</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-topics.sh --delete --zookeeper 172.20.40.51:2181 --topic seclogs</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看kafka数据"><a href="#查看kafka数据" class="headerlink" title="查看kafka数据"></a>查看kafka数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --broker-info --group yunwei-logstash --topic seclogs --zookeeper 172.20.40.51:2181</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://keemozhang.com/2017/07/13/nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -192,17 +265,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>nginx版本升级步骤 </p>
-          </div>
-
-<h3 id="nginx-x2F-openresty版本升级"><a href="#nginx-x2F-openresty版本升级" class="headerlink" title="nginx&#x2F;openresty版本升级"></a>nginx&#x2F;openresty版本升级</h3><hr>
+          <h3 id="nginx-x2F-openresty版本升级"><a href="#nginx-x2F-openresty版本升级" class="headerlink" title="nginx&#x2F;openresty版本升级"></a>nginx&#x2F;openresty版本升级</h3><hr>
 <p><img src="data:image/png;base64,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"></p>
 <blockquote>
 <p>nginx和openresty升级方式大同小异，这里以openresty为例介绍openresty平滑升级的详细操作方法</p>
@@ -275,7 +338,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -289,17 +352,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>ansible的学习 </p>
-          </div>
-
-<h3 id="一、ansible的安装"><a href="#一、ansible的安装" class="headerlink" title="一、ansible的安装"></a>一、ansible的安装</h3><h4 id="1-安装ansible，ansible需要python支持，所有一并安装python"><a href="#1-安装ansible，ansible需要python支持，所有一并安装python" class="headerlink" title="1. 安装ansible，ansible需要python支持，所有一并安装python"></a>1. 安装ansible，ansible需要python支持，所有一并安装python</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># yum -y install python ansible</span></span><br></pre></td></tr></table></figure>
+          <h3 id="一、ansible的安装"><a href="#一、ansible的安装" class="headerlink" title="一、ansible的安装"></a>一、ansible的安装</h3><h4 id="1-安装ansible，ansible需要python支持，所有一并安装python"><a href="#1-安装ansible，ansible需要python支持，所有一并安装python" class="headerlink" title="1. 安装ansible，ansible需要python支持，所有一并安装python"></a>1. 安装ansible，ansible需要python支持，所有一并安装python</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># yum -y install python ansible</span></span><br></pre></td></tr></table></figure>
 </code></pre>
 <h4 id="2-创建一个工作目录，hosts包含一台主机"><a href="#2-创建一个工作目录，hosts包含一台主机" class="headerlink" title="2.创建一个工作目录，hosts包含一台主机"></a>2.创建一个工作目录，hosts包含一台主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># mkdir playbook</span></span><br><span class="line">[root@student01 ~]<span class="comment"># cat playbook/inventory/hosts</span></span><br><span class="line">student02 ansible_ssh_host=172.25.0.12 ansible_ssh_port=22</span><br></pre></td></tr></table></figure>
 <h4 id="3-ansible服务器与其他机器创建信任关系"><a href="#3-ansible服务器与其他机器创建信任关系" class="headerlink" title="3. ansible服务器与其他机器创建信任关系"></a>3. ansible服务器与其他机器创建信任关系</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># ssh-keygen</span></span><br><span class="line">[root@student01 ~]<span class="comment"># ssh-copy-id root@student02</span></span><br></pre></td></tr></table></figure>
@@ -496,7 +549,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -510,17 +563,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>nginx的学习 </p>
-          </div>
-
-<h3 id="一、用户访问网站的完整访问流程"><a href="#一、用户访问网站的完整访问流程" class="headerlink" title="一、用户访问网站的完整访问流程"></a>一、用户访问网站的完整访问流程</h3><h4 id="1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。"><a href="#1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。" class="headerlink" title="1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。"></a>1. 客户端用户在浏览器输入网址<a target="_blank" rel="noopener" href="http://www.baidu.com,回车后,系统首先会查找系统本地的dns缓存及hosts文件信息,确定是否存在www.baidu.com域名对应的ip解析记录,如果有就直接获取ip地址,然后去访问这个ip地址对应的域名www.baidu.com的服务器./">www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。</a></h4><h4 id="2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器"><a href="#2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器" class="headerlink" title="2. 如果客户端本地DNS缓存及hosts文件没有www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器"></a>2. 如果客户端本地DNS缓存及hosts文件没有<a target="_blank" rel="noopener" href="http://www.baidu.com域名对应的ip解析记录,那么系统会把浏览器的解析请求发送给客户端本地设置的local/">www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local</a> DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器</h4><h4 id="3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好"><a href="#3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好" class="headerlink" title="3. local DNS从DNS系统的根开始请求对www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好"></a>3. local DNS从DNS系统的根开始请求对<a target="_blank" rel="noopener" href="http://www.baidu.com域名的解析,并针对各个层级的dns服务器系统进行一系列的查找,最终会找到www.baidu.com域名对应的授权dns服务器,而这个授权的dns服务器是企业购买域名时用于管理域名解析的服务器,这个授权服务器会有www.baidu.com对应的ip解析记录,如果没有解析记录,表示企业没有对www.baidu.com域名做解析设置,即网站没有架设好/">www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好</a></h4><h4 id="4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS"><a href="#4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS" class="headerlink" title="4. www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local DNS"></a>4. <a target="_blank" rel="noopener" href="http://www.baidu.com域名的授权dns服务器会把www.baidu.com对应的最终ip解析记录发给local/">www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local</a> DNS</h4><h4 id="5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期"><a href="#5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期" class="headerlink" title="5. local DNS把来自授权DNS服务器www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS TTL值控制的时间内不会过期"></a>5. local DNS把来自授权DNS服务器<a target="_blank" rel="noopener" href="http://www.baidu.com对应的ip解析记录发给客户端浏览器,并且他会把该域名和ip的对应解析缓存起来,以便下一次更快的返回相同解析请求的记录,这些缓存记录在dns/">www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS</a> TTL值控制的时间内不会过期</h4><h4 id="6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"><a href="#6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器" class="headerlink" title="6. 客户端浏览器获取www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"></a>6. 客户端浏览器获取<a target="_blank" rel="noopener" href="http://www.baidu.com的对应ip,浏览器会请求获得ip地址对应的网站服务器,网站服务器接收到客户的请求并响应处理,将客户请求的内容返回给客户端浏览器/">www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器</a></h4><h3 id="二、ginx源码包安装"><a href="#二、ginx源码包安装" class="headerlink" title="二、ginx源码包安装"></a>二、ginx源码包安装</h3><h4 id="1-安装Nginx依赖包"><a href="#1-安装Nginx依赖包" class="headerlink" title="1. 安装Nginx依赖包"></a>1. 安装Nginx依赖包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># yum -y install gcc gcc-c++ automake pcre pcre-devel zlib zlib-devel open openssl-devel</span></span><br></pre></td></tr></table></figure>
+          <h3 id="一、用户访问网站的完整访问流程"><a href="#一、用户访问网站的完整访问流程" class="headerlink" title="一、用户访问网站的完整访问流程"></a>一、用户访问网站的完整访问流程</h3><h4 id="1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。"><a href="#1-客户端用户在浏览器输入网址www-baidu-com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www-baidu-com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www-baidu-com的服务器。" class="headerlink" title="1. 客户端用户在浏览器输入网址www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。"></a>1. 客户端用户在浏览器输入网址<a target="_blank" rel="noopener" href="http://www.baidu.com,回车后,系统首先会查找系统本地的dns缓存及hosts文件信息,确定是否存在www.baidu.com域名对应的ip解析记录,如果有就直接获取ip地址,然后去访问这个ip地址对应的域名www.baidu.com的服务器./">www.baidu.com，回车后，系统首先会查找系统本地的DNS缓存及hosts文件信息，确定是否存在www.baidu.com域名对应的ip解析记录，如果有就直接获取ip地址，然后去访问这个ip地址对应的域名www.baidu.com的服务器。</a></h4><h4 id="2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器"><a href="#2-如果客户端本地DNS缓存及hosts文件没有www-baidu-com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local-DNS服务器解析，如果local-DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local-DNS会请求其他的DNS服务器" class="headerlink" title="2. 如果客户端本地DNS缓存及hosts文件没有www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器"></a>2. 如果客户端本地DNS缓存及hosts文件没有<a target="_blank" rel="noopener" href="http://www.baidu.com域名对应的ip解析记录,那么系统会把浏览器的解析请求发送给客户端本地设置的local/">www.baidu.com域名对应的ip解析记录，那么系统会把浏览器的解析请求发送给客户端本地设置的local</a> DNS服务器解析，如果local DNS服务器的本地缓存有对应的解析记录就会返回IP地址给客户端，如果没有，则local DNS会请求其他的DNS服务器</h4><h4 id="3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好"><a href="#3-local-DNS从DNS系统的根开始请求对www-baidu-com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www-baidu-com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www-baidu-com对应的ip解析记录，如果没有解析记录，表示企业没有对www-baidu-com域名做解析设置，即网站没有架设好" class="headerlink" title="3. local DNS从DNS系统的根开始请求对www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好"></a>3. local DNS从DNS系统的根开始请求对<a target="_blank" rel="noopener" href="http://www.baidu.com域名的解析,并针对各个层级的dns服务器系统进行一系列的查找,最终会找到www.baidu.com域名对应的授权dns服务器,而这个授权的dns服务器是企业购买域名时用于管理域名解析的服务器,这个授权服务器会有www.baidu.com对应的ip解析记录,如果没有解析记录,表示企业没有对www.baidu.com域名做解析设置,即网站没有架设好/">www.baidu.com域名的解析，并针对各个层级的DNS服务器系统进行一系列的查找，最终会找到www.baidu.com域名对应的授权DNS服务器，而这个授权的DNS服务器是企业购买域名时用于管理域名解析的服务器，这个授权服务器会有www.baidu.com对应的ip解析记录，如果没有解析记录，表示企业没有对www.baidu.com域名做解析设置，即网站没有架设好</a></h4><h4 id="4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS"><a href="#4-www-baidu-com域名的授权DNS服务器会把www-baidu-com对应的最终ip解析记录发给local-DNS" class="headerlink" title="4. www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local DNS"></a>4. <a target="_blank" rel="noopener" href="http://www.baidu.com域名的授权dns服务器会把www.baidu.com对应的最终ip解析记录发给local/">www.baidu.com域名的授权DNS服务器会把www.baidu.com对应的最终ip解析记录发给local</a> DNS</h4><h4 id="5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期"><a href="#5-local-DNS把来自授权DNS服务器www-baidu-com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS-TTL值控制的时间内不会过期" class="headerlink" title="5. local DNS把来自授权DNS服务器www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS TTL值控制的时间内不会过期"></a>5. local DNS把来自授权DNS服务器<a target="_blank" rel="noopener" href="http://www.baidu.com对应的ip解析记录发给客户端浏览器,并且他会把该域名和ip的对应解析缓存起来,以便下一次更快的返回相同解析请求的记录,这些缓存记录在dns/">www.baidu.com对应的ip解析记录发给客户端浏览器，并且他会把该域名和ip的对应解析缓存起来，以便下一次更快的返回相同解析请求的记录，这些缓存记录在DNS</a> TTL值控制的时间内不会过期</h4><h4 id="6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"><a href="#6-客户端浏览器获取www-baidu-com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器" class="headerlink" title="6. 客户端浏览器获取www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器"></a>6. 客户端浏览器获取<a target="_blank" rel="noopener" href="http://www.baidu.com的对应ip,浏览器会请求获得ip地址对应的网站服务器,网站服务器接收到客户的请求并响应处理,将客户请求的内容返回给客户端浏览器/">www.baidu.com的对应ip，浏览器会请求获得ip地址对应的网站服务器，网站服务器接收到客户的请求并响应处理，将客户请求的内容返回给客户端浏览器</a></h4><h3 id="二、ginx源码包安装"><a href="#二、ginx源码包安装" class="headerlink" title="二、ginx源码包安装"></a>二、ginx源码包安装</h3><h4 id="1-安装Nginx依赖包"><a href="#1-安装Nginx依赖包" class="headerlink" title="1. 安装Nginx依赖包"></a>1. 安装Nginx依赖包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># yum -y install gcc gcc-c++ automake pcre pcre-devel zlib zlib-devel open openssl-devel</span></span><br></pre></td></tr></table></figure>
 <h4 id="2-解压nginx安装包"><a href="#2-解压nginx安装包" class="headerlink" title="2. 解压nginx安装包"></a>2. 解压nginx安装包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># tar -xzvf nginx-1.13.0.tar.gz</span></span><br></pre></td></tr></table></figure>
 <h4 id="3-生成Makefile文件"><a href="#3-生成Makefile文件" class="headerlink" title="3. 生成Makefile文件"></a>3. 生成Makefile文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># cd nginx-1.13.0/</span></span><br><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># ./configure --user=nginx --group=nginx --prefix=/usr/local/nginx-1.13.0 --with-http_stub_status_module --with-http_ssl_module</span></span><br><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># ll Makefile </span></span><br><span class="line">-rw-r--r--. 1 root root 376 May 22 10:39 Makefile</span><br></pre></td></tr></table></figure>
 <h4 id="4-nginx的编译安装"><a href="#4-nginx的编译安装" class="headerlink" title="4. nginx的编译安装"></a>4. nginx的编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 nginx-1.13.0]<span class="comment"># make &amp;&amp; make install</span></span><br><span class="line">[root@student02 ~]<span class="comment"># useradd nginx -s /sbin/nologin -M</span></span><br><span class="line">[root@student02 ~]<span class="comment"># ln -s /usr/local/nginx-1.13.0 /usr/local/nginx</span></span><br><span class="line">[root@student02 ~]<span class="comment"># ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx</span></span><br></pre></td></tr></table></figure>
@@ -618,7 +661,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-08-28 21:52:58" itemprop="dateModified" datetime="2017-08-28T21:52:58+08:00">2017-08-28</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -632,18 +675,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>elk学习之elasticsearch </p>
-          </div>
-
-<hr>
-<h3 id="ELK的学习之Elasticsearch"><a href="#ELK的学习之Elasticsearch" class="headerlink" title="ELK的学习之Elasticsearch"></a>ELK的学习之Elasticsearch</h3><h4 id="安装Elasticsearch5-5"><a href="#安装Elasticsearch5-5" class="headerlink" title="安装Elasticsearch5.5"></a>安装Elasticsearch5.5</h4><p>Elasticsearch至少需要Java 8，安装并检查java版本</p>
+          <h3 id="ELK的学习之Elasticsearch"><a href="#ELK的学习之Elasticsearch" class="headerlink" title="ELK的学习之Elasticsearch"></a>ELK的学习之Elasticsearch</h3><h4 id="安装Elasticsearch5-5"><a href="#安装Elasticsearch5-5" class="headerlink" title="安装Elasticsearch5.5"></a>安装Elasticsearch5.5</h4><p>Elasticsearch至少需要Java 8，安装并检查java版本</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$JAVA_HOME</span></span><br></pre></td></tr></table></figure>
 
 <p>下载Elasticsearch5.5</p>
@@ -857,7 +889,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -871,17 +903,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>使用GPG加密解密步骤 </p>
-          </div>
-
-<ol>
+          <ol>
 <li>安装gpg软件包<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># yum -y install gnupg</span></span><br></pre></td></tr></table></figure></li>
 <li>生成密钥对<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># gpg --gen-key</span></span><br><span class="line">Please select what kind of key you want:</span><br><span class="line">(1) RSA and RSA (default)</span><br><span class="line">(2) DSA and Elgamal</span><br><span class="line">(3) DSA (sign only)</span><br><span class="line">(4) RSA (sign only)</span><br><span class="line">Your selection?1 <span class="comment">###直接回车，默认加密方式</span></span><br><span class="line">RSA keys may be between 1024 and 4096 bits long.</span><br><span class="line">What keysize <span class="keyword">do</span> you want? (2048) <span class="comment">###直接回车，默认秘钥长度</span></span><br><span class="line">Please specify how long the key should be valid.</span><br><span class="line">0 = key does not expire</span><br><span class="line">&lt;n&gt;  = key expires <span class="keyword">in</span> n days</span><br><span class="line">&lt;n&gt;w = key expires <span class="keyword">in</span> n weeks</span><br><span class="line">&lt;n&gt;m = key expires <span class="keyword">in</span> n months</span><br><span class="line">&lt;n&gt;y = key expires <span class="keyword">in</span> n years</span><br><span class="line">Key is valid <span class="keyword">for</span>? (0) <span class="comment">###直接回车，秘钥不过期</span></span><br><span class="line">Is this correct? (y/N)y <span class="comment">###“y”，确认</span></span><br><span class="line">Real name: welab <span class="comment">##输入姓名“welab”</span></span><br><span class="line">Email address:  <span class="comment">###可以不填</span></span><br><span class="line">Comment: <span class="comment">###可以不填</span></span><br><span class="line">Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O <span class="comment">###&quot;O&quot;确认信息正确</span></span><br><span class="line">Passphrase ************* <span class="comment">###输入私钥的保护密码&quot;Welaboper2017&quot;</span></span><br><span class="line">We need to generate a lot of random bytes. It is a good idea to perform</span><br><span class="line">some other action (<span class="built_in">type</span> on the keyboard, move the mouse, utilize the</span><br><span class="line">disks) during the prime generation; this gives the random number</span><br><span class="line">generator a better chance to gain enough entropy. <span class="comment">###这时候需要一些动作帮助生成秘钥</span></span><br><span class="line">gpg: checking the trustdb</span><br><span class="line">gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model</span><br><span class="line">gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u</span><br><span class="line">pub   2048R/C2673128 2017-05-17</span><br><span class="line">Key fingerprint = 853E BF25 AAEB 7DD7 42AD  F6E0 A13E DDBA C267 3128</span><br><span class="line">uid                  welab</span><br><span class="line">sub   2048R/62345630 2017-05-17 <span class="comment">###秘钥生成成功</span></span><br></pre></td></tr></table></figure></li>
 <li>查看生成的公私钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@student01 ~]<span class="comment"># gpg -K ###查看公钥</span></span><br><span class="line">/root/.gnupg/secring.gpg</span><br><span class="line">------------------------</span><br><span class="line">sec   2048R/C2673128 2017-05-17</span><br><span class="line">uid                  welab</span><br><span class="line">ssb   2048R/62345630 2017-05-17</span><br><span class="line">[root@student01 ~]<span class="comment"># gpg -k</span></span><br><span class="line">/root/.gnupg/pubring.gpg <span class="comment">###查看私钥</span></span><br><span class="line">------------------------</span><br><span class="line">pub   2048R/C2673128 2017-05-17</span><br><span class="line">uid                  welab</span><br><span class="line">sub   2048R/62345630 2017-05-17</span><br></pre></td></tr></table></figure></li>
@@ -942,7 +964,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-08-28 21:53:30" itemprop="dateModified" datetime="2017-08-28T21:53:30+08:00">2017-08-28</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -956,17 +978,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>tcp调优参数 </p>
-          </div>
-
-<p>统计tcp各种状态的个数</p>
+          <p>统计tcp各种状态的个数</p>
 <blockquote>
 <p>netstat -an |awk ‘&#x2F;^tcp&#x2F; {++state[$6]} END {for (key in state) print key,”\t”,state[key]}’</p>
 </blockquote>
@@ -1097,7 +1109,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -1111,17 +1123,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>正则表达式 </p>
-          </div>
-
-<h3 id="一、内核参数文档的查看"><a href="#一、内核参数文档的查看" class="headerlink" title="一、内核参数文档的查看"></a>一、内核参数文档的查看</h3><h4 id="1-在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用"><a href="#1-在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用" class="headerlink" title="1. 在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用"></a>1. 在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用</h4><p>安装kernel-doc</p>
+          <h3 id="一、内核参数文档的查看"><a href="#一、内核参数文档的查看" class="headerlink" title="一、内核参数文档的查看"></a>一、内核参数文档的查看</h3><h4 id="1-在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用"><a href="#1-在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用" class="headerlink" title="1. 在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用"></a>1. 在Linux系统中所有的内核参数都可以查询到，只需要安装官方安装包kernel-doc，先学习下内核参数帮助文档的使用</h4><p>安装kernel-doc</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@student02 ~]<span class="comment"># yum -y install kernel-doc</span></span><br></pre></td></tr></table></figure>
 
 <p>所有的内核参数都可以查询文档</p>
@@ -1815,7 +1817,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -1829,17 +1831,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>正则表达式 </p>
-          </div>
-
-<blockquote>
+          <blockquote>
 <ul>
 <li>正则表达式的特殊字符包括：*.*[]^${}\+?|()*</li>
 </ul>
@@ -2071,7 +2063,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-14 05:45:16" itemprop="dateModified" datetime="2017-07-14T05:45:16+08:00">2017-07-14</time>
+                <time title="Modified: 2022-12-14 15:55:49" itemprop="dateModified" datetime="2022-12-14T15:55:49+08:00">2022-12-14</time>
               </span>
 
           
@@ -2085,17 +2077,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>zhangqi </p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<div class="note default">
-            <p>docker的安装配置 </p>
-          </div>
-
-<p>容器是linux支持的</p>
+          <p>容器是linux支持的</p>
 <p>容器的隔离</p>
 <p><code>chroot</code>：隔离分区<br><code>cgroup</code>：隔离资源（CPU、内存）<br><code>netns</code>：隔离网络<br>namespace<br>ipc</p>
 <p>docker安装前提</p>
@@ -2293,7 +2275,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
